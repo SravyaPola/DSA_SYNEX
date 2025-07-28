@@ -3,7 +3,7 @@ package problems;
 // LC – 2384. Largest Palindromic Number
 public class Problem_15 {
 
-	public String largestPalindromic(String num) {
+	public static String largestPalindromic(String num) {
 		int[] freq = new int[10]; // freq[d] will count how many times digit d appears
 		for (char c : num.toCharArray()) { // for each character in the input string
 			freq[c - '0']++; // increment the count for that digit
@@ -39,6 +39,13 @@ public class Problem_15 {
 		}
 
 		return result; // otherwise, return the full palindrome
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(largestPalindromic("39878"));
+		System.out.println(largestPalindromic("00900"));
+		System.out.println(largestPalindromic("0000"));
+		System.out.println(largestPalindromic("54321"));
 	}
 
 }

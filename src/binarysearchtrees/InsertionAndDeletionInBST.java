@@ -13,8 +13,6 @@ class Node {
 		this.right = null;
 	}
 }
-//1)calculate the height of the BST
-//2)problem no 23 and 24 and 25
 
 public class InsertionAndDeletionInBST {
 	Node root;
@@ -77,7 +75,7 @@ public class InsertionAndDeletionInBST {
 			// for fall through will take care
 			prev = succParent;
 			current = successor;
-			// FALL-THROUGH to the splice-out logic below 
+			// FALL-THROUGH to the splice-out logic below
 			// At this point:
 			// Case - 1
 			// - successor.left == null (by findMin)
