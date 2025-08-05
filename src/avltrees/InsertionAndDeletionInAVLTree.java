@@ -1,6 +1,6 @@
 package avltrees;
 
-public class InsertionInAVLTree {
+public class InsertionAndDeletionInAVLTree {
 
 	class Node {
 		int val;
@@ -49,6 +49,56 @@ public class InsertionInAVLTree {
 		}
 
 		if (bf < -1 && key < node.right.val) {
+			node.right = rotateRight(node.right);
+			return rotateLeft(node);
+		}
+		return node;
+	}
+
+	private void delete(int key) {
+		root = delete(root, key);
+	}
+
+	private Node delete(Node node, int key) {
+		if (node == null) {
+			return null;
+		}
+		if (key < node.val) {
+			node.left = delete(node.left, key);
+		} else if (key > node.val) {
+			node.right = delete(node.right, key);
+		} else {
+			if (node.left == null || node.right == null) {
+				Node temp = (node.left != null) ? node.left : node.right;
+				node = temp;
+			} else {
+				Node succ = node.right;
+				while (succ.left != null) {
+					succ = succ.left;
+				}
+				node.val = succ.val;
+				node.right = delete(node.right, succ.val);
+			}
+		}
+		if (node == null) {
+			return null;
+		}
+		node.height = 1 + Math.max(height(node.left), height(node.right));
+		int bf = getBalanceFactor(node);
+		if (bf > 1 && getBalanceFactor(node.left) >= 0) {
+			return rotateRight(node);
+		}
+
+		if (bf > 1 && getBalanceFactor(node.left) < 0) {
+			node.left = rotateLeft(node.left);
+			return rotateRight(node);
+		}
+
+		if (bf < -1 && getBalanceFactor(node.right) <= 0) {
+			return rotateLeft(node);
+		}
+
+		if (bf < -1 && getBalanceFactor(node.right) > 0) {
 			node.right = rotateRight(node.right);
 			return rotateLeft(node);
 		}
@@ -104,14 +154,18 @@ public class InsertionInAVLTree {
 
 	public static void main(String[] args) {
 
-		InsertionInAVLTree avlTree = new InsertionInAVLTree();
+		InsertionAndDeletionInAVLTree avlTree = new InsertionAndDeletionInAVLTree();
 
 		int[] keys = { 50, 40, 30, 60, 55, 80, 10, 35, 32 };
-		
-		//int[] keys = { -10, -3, 0, 5, 9 };
+
+		// int[] keys = { -10, -3, 0, 5, 9 };
 		for (int key : keys) {
 			avlTree.insert(key);
 		}
+
+		avlTree.inOrder();
+
+		avlTree.delete(30);
 
 		avlTree.inOrder();
 

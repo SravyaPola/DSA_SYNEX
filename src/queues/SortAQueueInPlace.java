@@ -29,11 +29,38 @@ public class SortAQueueInPlace {
 		sort(q);
 		System.out.println(q);
 	}
+
 	private static void sort(Queue<Integer> q) {
 		int size = q.size();
+		// sorted tail will grow from 0 → size
 		for (int i = 0; i < size; i++) {
-			if(i < 0) {
+			int unsortedLen = size - i;
+
+			// 1) find the minimum among the first unsortedLen elements
+			int minVal = Integer.MAX_VALUE;
+			for (int j = 0; j < size; j++) {
+				int curr = q.remove();
+				if (j < unsortedLen && curr < minVal) {
+					minVal = curr;
+				}
+				q.add(curr);
 			}
+
+			// 2) remove exactly one occurrence of that min from the unsorted part,
+			// re-adding all other elements (both unsorted and already sorted tail)
+			boolean removed = false;
+			for (int j = 0; j < size; j++) {
+				int curr = q.remove();
+				// only skip one min in the unsorted segment
+				if (j < unsortedLen && curr == minVal && !removed) {
+					removed = true;
+				} else {
+					q.add(curr);
+				}
+			}
+
+			// 3) append the min to the back → it joins the sorted tail
+			q.add(minVal);
 		}
 	}
 
